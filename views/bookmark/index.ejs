@@ -1,0 +1,41 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+    <%- include("../share/stylesheets.ejs") %>
+  </head>
+  <body class="bg-light">
+  <%- include("../share/navbar.ejs") %>
+    <main>
+      <div class="py-5 text-center">
+        <h2>お気に入り画面</h2>
+      </div>
+      <div class="container">
+        <div class="row row-cols-1 row-cols-md-4 g-3">
+          <% for (var item of list) { %>
+          <form method="POST" action="/bookmark/delete/confirm">
+            <div class="col">
+              <div class="card shadow-sm">
+                <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<%= item.poster %>" class="img-fluid">
+                <div class="card-body">
+                  <p class="card-text"><%= item.title %></p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <input type="submit" class="btn btn-sm btn-outline-secondary" value="削除"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="poster" value="<%= item.poster %>">
+                        <input type="hidden" name="title" value="<%= item.title %>"> 
+                        <input type="hidden" name="release" value="<%= item.release %>">   
+                    </div>
+                    <small class="text-muted"><%= item.release %></small>
+                </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

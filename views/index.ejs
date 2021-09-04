@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Welcome Page</title>
+    <%- include("./share/stylesheets.ejs") %>
+
+  </head>
+  <body>
+    <main role="main" class="container">
+      <div class="border-bottom mt-5 mb-5">
+        <h1>Iwaseport</h1>
+      </div>
+      <% if (message && message.length !== 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+      <% } %>
+      <p class="lead">
+        貴重なお時間いただきありがとうございます。改めまして自己紹介をさせていただきます。<br />
+        名前は岩瀬 健一と申します。<br />
+        最近アマゾンプライムビデオでアニメや映画を見ることにはまっているため、上映中映画や、おすすめの映画を表示させる機能を作成いたしました。
+      </p>
+      <div class="col-sm-10">
+        <a href="/cinemas">
+          <button type="button"  class="btn btn-primary">映画一覧へ</button>
+        </a>
+      </div>
+    </main>
+  </body>
+</html>
