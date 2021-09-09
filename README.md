@@ -31,6 +31,6 @@ popper.js 1.14.3
 https://nodejs.org/ja にてNodeをインストールする
 
 # 実行方法  
-リポジトリをクローンするgit clone https://github.com/kozimatakesi/output_excel.git
+リポジトリをクローンする
 モジュールをインストールするnpm install
 
