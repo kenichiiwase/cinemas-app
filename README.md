@@ -29,7 +29,7 @@
 
 # 環境インストール方法  
 https://nodejs.org/ja にてNodeをインストールする  
-https://www.youtube.com/watch?v=85A6m1soKww の手順にてmongodbをインストールする  
+https://www.mongodb.com/try/download/community にてmongodbをインストールする  
 
 # 実行方法(Windows)  
 リポジトリをクローンする　`https://github.com/kenichiiwase/cinemas-app.git`  
