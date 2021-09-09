@@ -28,9 +28,9 @@
 - popper.js 1.14.3  
 
 # 環境インストール方法  
-- node
+- node  
 https://nodejs.org/ja にてNodeをインストールする  
-- mongodb
+- mongodb  
 https://www.mongodb.com/try/download/community にてmongodbをインストールする  
 
 
