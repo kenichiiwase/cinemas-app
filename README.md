@@ -34,4 +34,4 @@ https://www.youtube.com/watch?v=85A6m1soKww の手順にてmongodbをインス�
 # 実行方法(Windows)  
 リポジトリをクローンする　`https://github.com/kenichiiwase/cinemas-app.git`  
 モジュールをインストールする　npm install  
-別のターミナルにてnpm app.jsを実行し、画面を起動する `http://localhost:3000/`
+別のターミナルにて`npm app.js`を実行し、画面を起動する `http://localhost:3000/`
