@@ -28,8 +28,11 @@
 - popper.js 1.14.3  
 
 # 環境インストール方法  
+- node
 https://nodejs.org/ja にてNodeをインストールする  
+- mongodb
 https://www.mongodb.com/try/download/community にてmongodbをインストールする  
+
 
 # 実行方法(Windows)  
 リポジトリをクローンする　`https://github.com/kenichiiwase/cinemas-app.git`  
