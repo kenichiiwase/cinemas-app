@@ -9,4 +9,5 @@
 
 ※詳細は右記リンク参照[portfolio.pdf](https://github.com/kenichiiwase/portfolio/files/7109210/portfolio.pdf)
 
-# 機能
+# 動作環境  
+
