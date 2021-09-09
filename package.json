@@ -9,7 +9,7 @@
   "author": "Kenichi Iwase",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "csrf": "^3.1.0",
