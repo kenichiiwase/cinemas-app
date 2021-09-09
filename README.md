@@ -31,7 +31,6 @@ popper.js 1.14.3
 https://nodejs.org/ja にてNodeをインストールする
 
 # 実行方法(Windows)  
-<span style="color: green"> Some green text </span>
 リポジトリをクローンする　https://github.com/kenichiiwase/cinemas-app.git  
 モジュールをインストールする　npm install
 別のターミナルにてnpm app.jsを実行し、画面を起動する http://localhost:3000/
