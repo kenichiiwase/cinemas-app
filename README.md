@@ -31,6 +31,6 @@ popper.js 1.14.3
 https://nodejs.org/ja にてNodeをインストールする
 
 # 実行方法  
-リポジトリをクローンする
-モジュールをインストールするnpm install
+リポジトリをクローンする　https://github.com/kenichiiwase/cinemas-app.git
+モジュールをインストールする　npm install
 
