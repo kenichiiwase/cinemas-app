@@ -26,3 +26,8 @@ mongodb 3.6.6
 passport 0.4.1  
 passport-local 1.0.0  
 popper.js 1.14.3  
+
+# 環境インストール方法  
+https://nodejs.org/ja にてNodeをインストールする
+
+
