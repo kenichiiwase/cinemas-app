@@ -32,6 +32,7 @@
 https://nodejs.org/ja にてNodeをインストールする  
 - mongodb  
 https://www.mongodb.com/try/download/community にてmongodbをインストールする  
+※インストール後の設定は右記参照[mongodb_setup.pdf](https://github.com/kenichiiwase/cinemas-app/files/7147292/mongodb_setup.pdf)
 
 
 # 実行方法(Windows)  
