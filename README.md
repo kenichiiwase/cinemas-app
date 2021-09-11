@@ -27,7 +27,7 @@
 - passport-local 1.0.0  
 - popper.js 1.14.3  
 
-# 環境インストール方法  
+# 環境インストール方法(Windows用)  
 - node  
 https://nodejs.org/ja にてNodeをインストールする  
 - mongodb  
@@ -35,7 +35,7 @@ https://www.mongodb.com/try/download/community にてmongodbをインストー�
 ※インストール後の設定は右記参照 [mongodb_setup_windows.pdf](https://github.com/kenichiiwase/cinemas-app/files/7147292/mongodb_setup.pdf)
 
 
-# 実行方法(Windows)  
+# 実行方法  
 リポジトリをクローンする　`https://github.com/kenichiiwase/cinemas-app.git`  
 モジュールをインストールする　`npm install XXXXX`  
 ターミナルにて`npm app.js`を実行し、画面を起動する `http://localhost:3000/`
