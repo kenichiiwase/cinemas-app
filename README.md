@@ -36,5 +36,5 @@ https://www.mongodb.com/try/download/community にてmongodbをインストー�
 
 # 実行方法(Windows)  
 リポジトリをクローンする　`https://github.com/kenichiiwase/cinemas-app.git`  
-モジュールをインストールする　npm install  
+モジュールをインストールする　`npm install XXXXX`  
 ターミナルにて`npm app.js`を実行し、画面を起動する `http://localhost:3000/`
