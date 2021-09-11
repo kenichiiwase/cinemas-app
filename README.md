@@ -7,7 +7,7 @@
 - お気に入り映画登録処理  
 - お気に入り映画削除処理
 
-※詳細は右記リンク参照[portfolio.pdf](https://github.com/kenichiiwase/portfolio/files/7109210/portfolio.pdf)
+※詳細は右記リンク参照 [portfolio.pdf](https://github.com/kenichiiwase/portfolio/files/7109210/portfolio.pdf)
 
 # 動作環境  
 - node 14.16.0  
@@ -32,7 +32,7 @@
 https://nodejs.org/ja にてNodeをインストールする  
 - mongodb  
 https://www.mongodb.com/try/download/community にてmongodbをインストールする  
-※インストール後の設定は右記参照[mongodb_setup.pdf](https://github.com/kenichiiwase/cinemas-app/files/7147292/mongodb_setup.pdf)
+※インストール後の設定は右記参照 [mongodb_setup.pdf](https://github.com/kenichiiwase/cinemas-app/files/7147292/mongodb_setup.pdf)
 
 
 # 実行方法(Windows)  
