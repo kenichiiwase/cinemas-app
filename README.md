@@ -22,7 +22,7 @@
 - express-session 1.17.1  
 - font-awesome 4.7.0  
 - method-override 3.0.0  
-- mongodb 3.6.6  
+- mongodb 4.1.1  
 - passport 0.4.1  
 - passport-local 1.0.0  
 - popper.js 1.14.3  
