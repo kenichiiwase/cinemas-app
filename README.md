@@ -24,5 +24,5 @@ https://www.mongodb.com/try/download/community にてmongodbをインストー�
 
 ## 実行方法  
 1. `npm install`を実行  
-2. ターミナルにて`node app.js`を実行  
+2. ターミナルにて`npm run start`を実行  
 3. `http://localhost:3000/`でアクセス  
