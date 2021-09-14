@@ -12,6 +12,7 @@
 ## 動作環境  
 - node 14.16.0  
 - windows 10  
+
 ※Linux,Mucでは対応未確認
 
 ## 環境インストール方法(Windows用)  
