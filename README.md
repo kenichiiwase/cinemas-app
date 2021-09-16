@@ -25,5 +25,7 @@ https://www.mongodb.com/try/download/community にてmongodbをインストー�
 
 ## 実行方法  
 1. `npm install`を実行  
-2. `npm run start`を実行  
-3. `http://localhost:3000/`でアクセス  
+2. https://www.themoviedb.org/?language=ja にアカウント登録し、APIキーを確認  
+![スクリーンショット 2021-09-17 001037](https://user-images.githubusercontent.com/44935028/133637848-1d58c782-6245-4d8e-ab30-7906be613511.png)  
+3. `npm run start`を実行  
+4. `http://localhost:3000/`でアクセス  
