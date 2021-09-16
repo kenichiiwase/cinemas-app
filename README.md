@@ -7,7 +7,7 @@
 - お気に入り映画登録処理  
 - お気に入り映画削除処理
 
-※詳細は右記リンク参照 [映画情報取得システム.pdf](https://github.com/kenichiiwase/cinemas-app/files/7179099/default.pdf)
+※詳細は右記リンク参照 [映画情報管理.pdf](https://github.com/kenichiiwase/cinemas-app/files/7179099/default.pdf)
 
 ## 動作環境  
 - node 14.16.0  
