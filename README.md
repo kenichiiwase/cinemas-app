@@ -27,6 +27,6 @@ https://www.mongodb.com/try/download/community にてmongodbをインストー�
 1. `npm install`を実行  
 2. https://www.themoviedb.org/?language=ja にアカウント登録し、APIキーを確認  
 ![スクリーンショット 2021-09-17 001037](https://user-images.githubusercontent.com/44935028/133637848-1d58c782-6245-4d8e-ab30-7906be613511.png)  
-3. cinemas-app/routes/cinemas.js,cinemas-app/routes/trends.jsへAPIキーを設定   
+3. `cinemas-app/routes/cinemas.js`,`cinemas-app/routes/trends.js`へAPIキーを設定   
 4. `npm run start`を実行  
 5. `http://localhost:3000/`でアクセス  
