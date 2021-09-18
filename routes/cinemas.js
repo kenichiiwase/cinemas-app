@@ -1,9 +1,5 @@
-/* eslint-disable no-undef */
-const {
-  CONNECTION_URL,
-  OPTIONS,
-  DATABSE,
-} = require("../config/mongodb.config");
+const { OPTIONS } = require("../config/mongodb.config");
+require("dotenv").config();
 const router = require("express").Router();
 const MongoClient = require("mongodb").MongoClient;
 const tokens = require("csrf")();
@@ -43,10 +39,15 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/posts/regist/confirm", (req, res) => {
-  const data = req.body;
-  res.render("./cinemas/posts/regist-confirm.ejs", {
-    data,
-    message: req.flash("message"),
+  tokens.secret((error, secret) => {
+    let token = tokens.create(secret);
+    req.session._csrf = secret;
+    res.cookie("_csrf", token);
+    const data = req.body;
+    res.render("./cinemas/posts/regist-confirm.ejs", {
+      data,
+      message: req.flash("message"),
+    });
   });
 });
 
@@ -61,33 +62,37 @@ router.post(
       throw new Error("Invalid Token.");
     }
 
-    MongoClient.connect(CONNECTION_URL, OPTIONS, async (error, client) => {
-      const db = client.db(DATABSE);
-      const userInf = req.user;
-      try {
-        const countData = await db
-          .collection("video_info")
-          .find({ title: req.body.title })
-          .count();
+    MongoClient.connect(
+      process.env.CONNECTION_URL,
+      OPTIONS,
+      async (error, client) => {
+        const db = client.db(process.env.DATABASE);
+        const userInf = req.user;
+        try {
+          const countData = await db
+            .collection("video_info")
+            .find({ title: req.body.title })
+            .count();
 
-        const data = createRegistData(req.body, userInf);
+          const data = createRegistData(req.body, userInf);
 
-        if (countData !== 0) {
-          next();
-        } else {
-          await db.collection("video_info").insertOne(data);
-          res.redirect("/cinemas/posts/regist/complete");
+          if (countData !== 0) {
+            next();
+          } else {
+            await db.collection("video_info").insertOne(data);
+            res.redirect("/cinemas/posts/regist/complete");
+          }
+        } catch (error) {
+          req.flash("message", "登録時にエラーが発生しました。");
+          res.render("./cinemas/posts/regist-confirm.ejs", {
+            data,
+            message: req.flash("message"),
+          });
+        } finally {
+          client.close();
         }
-      } catch (error) {
-        req.flash("message", "登録時にエラーが発生しました。");
-        res.render("./cinemas/posts/regist-confirm.ejs", {
-          data,
-          message: req.flash("message"),
-        });
-      } finally {
-        client.close();
       }
-    });
+    );
   },
   (req, res) => {
     const data = createRegistData(req.body);

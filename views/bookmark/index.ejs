@@ -17,7 +17,9 @@
               <div class="card shadow-sm">
                 <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<%= item.poster %>" class="img-fluid">
                 <div class="card-body">
-                  <p class="card-text"><%= item.title %></p>
+                  <div class="text-truncate" >
+                    <p class="card-text"><%= item.title %></p>
+                  </div>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                         <input type="submit" class="btn btn-sm btn-outline-secondary" value="削除"/>

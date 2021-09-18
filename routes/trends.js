@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const router = require("express").Router();
 const axios = require("axios");
 const apikey = "";
