@@ -27,8 +27,8 @@ https://www.mongodb.com/try/download/community にてmongodbをインストー�
 1. `npm install`を実行  
 2. https://www.themoviedb.org/?language=ja にアカウント登録し、APIキーを確認  
 ![スクリーンショット 2021-09-17 001037](https://user-images.githubusercontent.com/44935028/133637848-1d58c782-6245-4d8e-ab30-7906be613511.png)  
-3. `cinemas-app/routes/cinemas.js`,`cinemas-app/routes/trends.js`へAPIキーを設定   
+3. `cinemas-app/src/routes/cinemas.ts`,`cinemas-app/src/routes/trends.ts`へAPIキーを設定   
 4. 環境変数を`.env`に設定  
-![スクリーンショット 2021-09-18 153342](https://user-images.githubusercontent.com/44935028/133878969-80c30e79-5d6d-49ab-9056-9b1855dbe351.png)  
+[プレゼンテーション1.pdf](https://github.com/kenichiiwase/financialstatements-app/files/7253176/1.pdf)  
 5. `npm run start`を実行  
 6. `http://localhost:3000/`でアクセス  
