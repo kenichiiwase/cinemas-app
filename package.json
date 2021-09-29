@@ -6,7 +6,7 @@
     "start": "node app.js",
     "eslint": "eslint",
     "start-watch": "nodemon dist/app.js",
-    "build": "npm run clear && tsc && npm run copy-files",
+    "build": "npm run clear && npm run clear && npm run copy-files",
     "clear": "rimraf dist/",
     "copy-files": "copyfiles public/**/* dist/"
   },
