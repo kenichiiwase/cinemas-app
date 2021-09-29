@@ -6,7 +6,7 @@ import axios, { AxiosResponse } from "axios";
 let router = express.Router();
 let obj: AxiosResponse<any>;
 let data: object;
-const apikey = "b2af30b05b5e266c41d08f8b67952271";
+const apikey = "";
 
 const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&language=ja`;
 
