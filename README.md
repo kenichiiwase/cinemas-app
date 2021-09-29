@@ -29,6 +29,6 @@ https://www.mongodb.com/try/download/community にてmongodbをインストー�
 ![スクリーンショット 2021-09-17 001037](https://user-images.githubusercontent.com/44935028/133637848-1d58c782-6245-4d8e-ab30-7906be613511.png)  
 3. `cinemas-app/src/routes/cinemas.ts`,`cinemas-app/src/routes/trends.ts`へAPIキーを設定   
 4. 環境変数を`.env`に設定  
-[プレゼンテーション1.pdf](https://github.com/kenichiiwase/financialstatements-app/files/7253176/1.pdf)  
+![スクリーンショット 2021-09-30 001846](https://user-images.githubusercontent.com/44935028/135301128-1de12200-56f8-4e3a-a975-2c39b69ed5da.png)  
 5. `npm run start`を実行  
 6. `http://localhost:3000/`でアクセス  
