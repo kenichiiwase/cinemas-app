@@ -1,7 +1,7 @@
 import express from "express";
 import axios, { AxiosResponse } from "axios";
 let router = express.Router();
-const apikey = "b2af30b05b5e266c41d08f8b67952271";
+const apikey = "";
 const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${apikey}&language=ja`;
 let obj: AxiosResponse<any>;
 
