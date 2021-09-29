@@ -1,9 +1,11 @@
-const router = require("express").Router();
-const axios = require("axios");
-const apikey = "";
+import express from "express";
+import axios, { AxiosResponse } from "axios";
+let router = express.Router();
+const apikey = "b2af30b05b5e266c41d08f8b67952271";
 const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${apikey}&language=ja`;
+let obj: AxiosResponse<any>;
 
-router.get("/", async (req, res) => {
+router.get("/", async (req: express.Request, res: express.Response) => {
   try {
     const res = await axios.get(url);
     obj = res.data.results;
@@ -22,4 +24,4 @@ router.get("/", async (req, res) => {
   res.render("./trends/index.ejs", data);
 });
 
-module.exports = router;
+export default router;

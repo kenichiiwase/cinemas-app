@@ -1,10 +1,14 @@
-const { OPTIONS } = require("../../config/mongodb.config");
-require("dotenv").config();
-const hash = require("./hash");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const MongoClient = require("mongodb").MongoClient;
-let initialize, authenticate;
+import hash from "./hash";
+import passport from "passport";
+import * as passportLocal from "passport-local";
+import express from "express";
+import { MongoClient } from "mongodb";
+const LocalStrategy = passportLocal.Strategy;
+const connectionUrl = process.env.CONNECTION_URL;
+
+if (!connectionUrl) {
+  throw new Error("CONNECTION_URLが未設定です。");
+}
 
 // サーバーからクライアントへ保存する処理
 passport.serializeUser((email, done) => {
@@ -13,10 +17,8 @@ passport.serializeUser((email, done) => {
 
 // クライアントからサーバーへ復元する処理
 passport.deserializeUser((email, done) => {
-  MongoClient.connect(
-    process.env.CONNECTION_URL,
-    OPTIONS,
-    async (error, client) => {
+  MongoClient.connect(connectionUrl, async (error, client) => {
+    if (client) {
       let db = client.db(process.env.DATABSE);
       try {
         const user = await db.collection("users").findOne({ email });
@@ -27,7 +29,7 @@ passport.deserializeUser((email, done) => {
         client.close();
       }
     }
-  );
+  });
 });
 
 // ログインボタン押下された際の処理
@@ -40,13 +42,10 @@ passport.use(
       passwordField: "password",
       passReqToCallback: true,
     },
-    (req, username, password, done) => {
-      MongoClient.connect(
-        process.env.CONNECTION_URL,
-        OPTIONS,
-        async (error, client) => {
+    (req: express.Request, username, password, done) => {
+      MongoClient.connect(connectionUrl, async (error, client) => {
+        if (client) {
           const db = client.db(process.env.DATABSE);
-
           try {
             const userData = await db
               .collection("users")
@@ -55,59 +54,44 @@ passport.use(
               // セッションIDの張替え
               req.session.regenerate((error) => {
                 if (error) {
-                  done(
-                    null,
-                    false,
-                    req.flash(
-                      "message",
-                      "システムエラー。管理者にお問い合わせください。"
-                    )
-                  );
+                  done(null, false, {
+                    message: "システムエラー。管理者にお問い合わせください。",
+                  });
                 } else {
                   done(null, userData.email);
                 }
               });
             } else {
-              done(
-                null,
-                false,
-                req.flash(
-                  "message",
-                  "ユーザー名 または パスワード が間違っています。"
-                )
-              );
+              done(null, false, {
+                message: "ユーザー名 または パスワード が間違っています。",
+              });
             }
           } catch {
-            done(
-              null,
-              false,
-              req.flash(
-                "message",
-                "システムエラー。管理者にお問い合わせください。"
-              )
-            );
+            done(null, false, {
+              message: "システムエラー。管理者にお問い合わせください。",
+            });
           } finally {
             client.close();
           }
         }
-      );
+      });
     }
   )
 );
 
 // app.use()に渡す。
-initialize = function () {
+const initialize = function () {
   return [passport.initialize(), passport.session()];
 };
 
-authenticate = function () {
+const authenticate = function () {
   return passport.authenticate("local-strategy", {
     successRedirect: "/login/success",
     failureRedirect: "/",
   });
 };
 
-module.exports = {
+export default {
   initialize,
   authenticate,
 };
