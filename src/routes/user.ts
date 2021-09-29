@@ -1,9 +1,14 @@
-const { OPTIONS } = require("../config/mongodb.config");
-const router = require("express").Router();
-const MongoClient = require("mongodb").MongoClient;
-const hash = require("../lib/security/hash");
+import express from "express";
+import { MongoClient } from "mongodb";
+import hash from "../lib/security/hash";
+let router = express.Router();
+const connectionUrl = process.env.CONNECTION_URL;
 
-const createRegistData = function (body, totaluser, hash) {
+if (!connectionUrl) {
+  throw new Error("CONNECTION_URLが未設定です。");
+}
+
+const createRegistData = function (body: any, totaluser: number, hash: string) {
   const datetime = new Date();
   return {
     user_id: totaluser + 1,
@@ -16,17 +21,15 @@ const createRegistData = function (body, totaluser, hash) {
   };
 };
 
-router.get("/", (req, res) => {
+router.get("/", (req: express.Request, res: express.Response) => {
   res.render("./user/post/user-input.ejs", { message: req.flash("message") });
 });
 
 router.post(
   "/post/regist/execute",
-  (req, res, next) => {
-    MongoClient.connect(
-      process.env.CONNECTION_URL,
-      OPTIONS,
-      async (error, client) => {
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    MongoClient.connect(connectionUrl, async (error, client) => {
+      if (client) {
         const db = client.db(process.env.DATABSE);
         try {
           const results = await db
@@ -59,9 +62,9 @@ router.post(
           client.close();
         }
       }
-    );
+    });
   },
-  (req, res) => {
+  (req: express.Request, res: express.Response) => {
     req.flash(
       "message",
       "そのユーザー(メールアドレス)は既に登録されているため、登録できません。"
@@ -72,8 +75,11 @@ router.post(
   }
 );
 
-router.get("/post/regist/complete", (req, res) => {
-  res.render("./user/post/user-complete.ejs");
-});
+router.get(
+  "/post/regist/complete",
+  (req: express.Request, res: express.Response) => {
+    res.render("./user/post/user-complete.ejs");
+  }
+);
 
-module.exports = router;
+export default router;

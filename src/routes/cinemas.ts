@@ -1,13 +1,22 @@
-const { OPTIONS } = require("../config/mongodb.config");
-require("dotenv").config();
-const router = require("express").Router();
-const MongoClient = require("mongodb").MongoClient;
-const tokens = require("csrf")();
-const axios = require("axios");
-const apikey = "";
+//import OPTIONS from "../config/mongodb.config";
+import express from "express";
+import { MongoClient } from "mongodb";
+import csrf from "csrf";
+import axios, { AxiosResponse } from "axios";
+let router = express.Router();
+let obj: AxiosResponse<any>;
+let data: object;
+const apikey = "b2af30b05b5e266c41d08f8b67952271";
+
 const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&language=ja`;
 
-const createRegistData = function (body, user) {
+const connectionUrl = process.env.CONNECTION_URL;
+
+if (!connectionUrl) {
+  throw new Error("CONNECTION_URLが未設定です。");
+}
+
+const createRegistData = function (body: any, user: Express.User): object {
   const datetime = new Date();
   return {
     user_mail: user,
@@ -19,7 +28,7 @@ const createRegistData = function (body, user) {
 };
 
 // api取得url
-router.get("/", async (req, res) => {
+router.get("/", async (req: express.Request, res: express.Response) => {
   try {
     const res = await axios.get(url);
     obj = res.data.results;
@@ -38,36 +47,39 @@ router.get("/", async (req, res) => {
   res.render("./cinemas/index.ejs", data);
 });
 
-router.post("/posts/regist/confirm", (req, res) => {
-  tokens.secret((error, secret) => {
-    let token = tokens.create(secret);
-    req.session._csrf = secret;
-    res.cookie("_csrf", token);
-    const data = req.body;
-    res.render("./cinemas/posts/regist-confirm.ejs", {
-      data,
-      message: req.flash("message"),
+router.post(
+  "/posts/regist/confirm",
+  (req: express.Request, res: express.Response) => {
+    const tokens = new csrf();
+    tokens.secret((error, secret) => {
+      let token = tokens.create(secret);
+      req.session._csrf = secret;
+      res.cookie("_csrf", token);
+      const data = req.body;
+      res.render("./cinemas/posts/regist-confirm.ejs", {
+        data,
+        message: req.flash("message"),
+      });
     });
-  });
-});
+  }
+);
 
 router.post(
   "/posts/regist/execute",
-  (req, res, next) => {
-    const secret = req.session._csrf;
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const secret = req.session._csrf || "csrf";
     const token = req.cookies._csrf;
 
     // secret,tokenの組み合わせチェック
+    const tokens = new csrf();
     if (tokens.verify(secret, token) === false) {
       throw new Error("Invalid Token.");
     }
 
-    MongoClient.connect(
-      process.env.CONNECTION_URL,
-      OPTIONS,
-      async (error, client) => {
+    MongoClient.connect(connectionUrl, async (error, client) => {
+      if (client) {
         const db = client.db(process.env.DATABASE);
-        const userInf = req.user;
+        const userInf = req.user || "user";
         try {
           const countData = await db
             .collection("video_info")
@@ -92,10 +104,11 @@ router.post(
           client.close();
         }
       }
-    );
+    });
   },
-  (req, res) => {
-    const data = createRegistData(req.body);
+  (req: express.Request, res: express.Response) => {
+    const userInf = req.user || "user";
+    const data = createRegistData(req.body, userInf);
     req.flash("message", "既に登録済みです。");
     res.render("./cinemas/posts/regist-confirm.ejs", {
       data,
@@ -104,10 +117,13 @@ router.post(
   }
 );
 
-router.get("/posts/regist/complete", (req, res) => {
-  delete req.session._csrf;
-  res.clearCookie("_csrf");
-  res.render("./cinemas/posts/regist-complete.ejs");
-});
+router.get(
+  "/posts/regist/complete",
+  (req: express.Request, res: express.Response) => {
+    delete req.session._csrf;
+    res.clearCookie("_csrf");
+    res.render("./cinemas/posts/regist-complete.ejs");
+  }
+);
 
-module.exports = router;
+export default router;
