@@ -1,4 +1,3 @@
-// import OPTIONS from "@/mongodb.config";
 import express from "express";
 import { MongoClient } from "mongodb";
 let router = express.Router();
