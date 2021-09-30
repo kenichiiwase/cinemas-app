@@ -1,4 +1,3 @@
-//import OPTIONS from "../config/mongodb.config";
 import express from "express";
 import { MongoClient } from "mongodb";
 import csrf from "csrf";
