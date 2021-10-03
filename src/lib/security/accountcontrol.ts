@@ -1,8 +1,9 @@
-import hash from "./hash";
 import passport from "passport";
 import * as passportLocal from "passport-local";
 import express from "express";
 import { MongoClient } from "mongodb";
+import hash from "./hash";
+
 const LocalStrategy = passportLocal.Strategy;
 const connectionUrl = process.env.CONNECTION_URL;
 
@@ -19,7 +20,7 @@ passport.serializeUser((email, done) => {
 passport.deserializeUser((email, done) => {
   MongoClient.connect(connectionUrl, async (error, client) => {
     if (client) {
-      let db = client.db(process.env.DATABSE);
+      const db = client.db(process.env.DATABSE);
       try {
         const user = await db.collection("users").findOne({ email });
         done(null, user);
@@ -75,16 +76,16 @@ passport.use(
           }
         }
       });
-    }
-  )
+    },
+  ),
 );
 
 // app.use()に渡す。
-const initialize = function () {
+const initialize = function setInitialize() {
   return [passport.initialize(), passport.session()];
 };
 
-const authenticate = function () {
+const authenticate = function redirect() {
   return passport.authenticate("local-strategy", {
     successRedirect: "/login/success",
     failureRedirect: "/",
