@@ -2,7 +2,8 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import csrf from "csrf";
 import axios, { AxiosResponse } from "axios";
-let router = express.Router();
+
+const router = express.Router();
 let obj: AxiosResponse<any>;
 let data: object;
 const apikey = "";
@@ -15,7 +16,7 @@ if (!connectionUrl) {
   throw new Error("CONNECTION_URLが未設定です。");
 }
 
-const createRegistData = function (body: any, user: Express.User): object {
+function createRegistData(body: any, user: any): object {
   const datetime = new Date();
   return {
     user_mail: user,
@@ -24,7 +25,7 @@ const createRegistData = function (body: any, user: Express.User): object {
     title: body.title,
     poster: body.poster,
   };
-};
+}
 
 // api取得url
 router.get("/", async (req: express.Request, res: express.Response) => {
@@ -34,12 +35,13 @@ router.get("/", async (req: express.Request, res: express.Response) => {
   } catch (error) {
     req.flash(
       "message",
-      "映画情報取得時にエラーが発生しました。システム管理者へお問い合わせください。"
+      "映画情報取得時にエラーが発生しました。システム管理者へお問い合わせください。",
     );
     res.render("./index.ejs", {
       message: req.flash("message"),
     });
   }
+
   const data = {
     list: obj,
   };
@@ -51,7 +53,7 @@ router.post(
   (req: express.Request, res: express.Response) => {
     const tokens = new csrf();
     tokens.secret((error, secret) => {
-      let token = tokens.create(secret);
+      const token = tokens.create(secret);
       req.session._csrf = secret;
       res.cookie("_csrf", token);
       const data = req.body;
@@ -60,7 +62,7 @@ router.post(
         message: req.flash("message"),
       });
     });
-  }
+  },
 );
 
 router.post(
@@ -113,7 +115,7 @@ router.post(
       data,
       message: req.flash("message"),
     });
-  }
+  },
 );
 
 router.get(
@@ -122,7 +124,7 @@ router.get(
     delete req.session._csrf;
     res.clearCookie("_csrf");
     res.render("./cinemas/posts/regist-complete.ejs");
-  }
+  },
 );
 
 export default router;
