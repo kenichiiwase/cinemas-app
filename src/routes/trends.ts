@@ -1,6 +1,7 @@
 import express from "express";
 import axios, { AxiosResponse } from "axios";
-let router = express.Router();
+
+const router = express.Router();
 const apikey = "";
 const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${apikey}&language=ja`;
 let obj: AxiosResponse<any>;
@@ -12,7 +13,7 @@ router.get("/", async (req: express.Request, res: express.Response) => {
   } catch (error) {
     req.flash(
       "message",
-      "映画情報取得時にエラーが発生しました。システム管理者へお問い合わせください。"
+      "映画情報取得時にエラーが発生しました。システム管理者へお問い合わせください。",
     );
     res.render("./index.ejs", {
       message: req.flash("message"),
