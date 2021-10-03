@@ -1,6 +1,7 @@
 import express from "express";
 import { MongoClient } from "mongodb";
-let router = express.Router();
+
+const router = express.Router();
 const connectionUrl = process.env.CONNECTION_URL;
 
 if (!connectionUrl) {
@@ -10,7 +11,7 @@ if (!connectionUrl) {
 router.get("/", (req: express.Request, res: express.Response) => {
   MongoClient.connect(connectionUrl, async (error, client) => {
     if (client) {
-      let db = client.db(process.env.DATABASE);
+      const db = client.db(process.env.DATABASE);
       try {
         const results = await db
           .collection("video_info")
@@ -23,7 +24,7 @@ router.get("/", (req: express.Request, res: express.Response) => {
       } catch (error) {
         req.flash(
           "message",
-          "お気に入り映画情報取得時にエラーが発生しました。"
+          "お気に入り映画情報取得時にエラーが発生しました。",
         );
         res.render("./index.ejs", {
           message: req.flash("message"),
@@ -43,7 +44,7 @@ router.post(
       data,
       message: req.flash("message"),
     });
-  }
+  },
 );
 
 router.delete(
@@ -69,14 +70,14 @@ router.delete(
         }
       }
     });
-  }
+  },
 );
 
 router.get(
   "/delete/complete",
   (req: express.Request, res: express.Response) => {
     res.render("./bookmark/delete/delete-complete.ejs");
-  }
+  },
 );
 
 export default router;
