@@ -8,125 +8,75 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import OPTIONS from "@/mongodb.config";
-var express_1 = __importDefault(require("express"));
-var mongodb_1 = require("mongodb");
-var router = express_1.default.Router();
-var connectionUrl = process.env.CONNECTION_URL;
+const express_1 = __importDefault(require("express"));
+const mongodb_1 = require("mongodb");
+const router = express_1.default.Router();
+const connectionUrl = process.env.CONNECTION_URL;
 if (!connectionUrl) {
-    throw new Error("CONNECTION_URLが未設定です。");
+    throw new Error('CONNECTION_URLが未設定です。');
 }
-router.get("/", function (req, res) {
-    mongodb_1.MongoClient.connect(connectionUrl, function (error, client) { return __awaiter(void 0, void 0, void 0, function () {
-        var db, results, data, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!client) return [3 /*break*/, 5];
-                    db = client.db(process.env.DATABASE);
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, 4, 5]);
-                    return [4 /*yield*/, db
-                            .collection("video_info")
-                            .find({ user_mail: req.user })
-                            .toArray()];
-                case 2:
-                    results = _a.sent();
-                    data = {
-                        list: results,
-                    };
-                    res.render("./bookmark/index.ejs", data);
-                    return [3 /*break*/, 5];
-                case 3:
-                    error_1 = _a.sent();
-                    req.flash("message", "お気に入り映画情報取得時にエラーが発生しました。");
-                    res.render("./index.ejs", {
-                        message: req.flash("message"),
-                    });
-                    return [3 /*break*/, 5];
-                case 4:
-                    client.close();
-                    return [7 /*endfinally*/];
-                case 5: return [2 /*return*/];
+router.get('/', (req, res) => {
+    mongodb_1.MongoClient.connect(connectionUrl, (error, client) => __awaiter(void 0, void 0, void 0, function* () {
+        if (client) {
+            const db = client.db(process.env.DATABASE);
+            try {
+                const results = yield db
+                    .collection('video_info')
+                    .find({ user_mail: req.user })
+                    .toArray();
+                const data = {
+                    list: results,
+                };
+                res.render('./bookmark/index.ejs', data);
             }
-        });
-    }); });
+            catch (error) {
+                req.flash('message', 'お気に入り映画情報取得時にエラーが発生しました。');
+                res.render('./index.ejs', {
+                    message: req.flash('message'),
+                });
+            }
+            finally {
+                client.close();
+            }
+        }
+    }));
 });
-router.post("/delete/confirm", function (req, res) {
-    var data = req.body;
-    res.render("./bookmark/delete/delete-confirm.ejs", {
-        data: data,
-        message: req.flash("message"),
+router.post('/delete/confirm', (req, res) => {
+    const data = req.body;
+    res.render('./bookmark/delete/delete-confirm.ejs', {
+        data,
+        message: req.flash('message'),
     });
 });
-router.delete("/delete/execute", function (req, res) {
-    mongodb_1.MongoClient.connect(connectionUrl, function (error, client) { return __awaiter(void 0, void 0, void 0, function () {
-        var db, data, error_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!client) return [3 /*break*/, 5];
-                    db = client.db(process.env.DATABASE);
-                    data = req.body;
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, 4, 5]);
-                    return [4 /*yield*/, Promise.all([
-                            db.collection("video_info").deleteOne({ title: req.body.title }),
-                        ])];
-                case 2:
-                    _a.sent();
-                    res.redirect("/bookmark/delete/complete");
-                    return [3 /*break*/, 5];
-                case 3:
-                    error_2 = _a.sent();
-                    req.flash("message", "お気に入り映画削除時にエラーが発生しました。");
-                    res.render("./bookmark/delete/delete-confirm.ejs", {
-                        data: data,
-                        message: req.flash("message"),
-                    });
-                    return [3 /*break*/, 5];
-                case 4:
-                    client.close();
-                    return [7 /*endfinally*/];
-                case 5: return [2 /*return*/];
+router.delete('/delete/execute', (req, res) => {
+    mongodb_1.MongoClient.connect(connectionUrl, (error, client) => __awaiter(void 0, void 0, void 0, function* () {
+        if (client) {
+            const db = client.db(process.env.DATABASE);
+            const data = req.body;
+            try {
+                yield Promise.all([
+                    db.collection('video_info').deleteOne({ title: req.body.title }),
+                ]);
+                res.redirect('/bookmark/delete/complete');
             }
-        });
-    }); });
+            catch (error) {
+                req.flash('message', 'お気に入り映画削除時にエラーが発生しました。');
+                res.render('./bookmark/delete/delete-confirm.ejs', {
+                    data,
+                    message: req.flash('message'),
+                });
+            }
+            finally {
+                client.close();
+            }
+        }
+    }));
 });
-router.get("/delete/complete", function (req, res) {
-    res.render("./bookmark/delete/delete-complete.ejs");
+router.get('/delete/complete', (req, res) => {
+    res.render('./bookmark/delete/delete-complete.ejs');
 });
 exports.default = router;

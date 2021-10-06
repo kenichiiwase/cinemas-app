@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "eslint": "eslint",
-    "start-watch": "nodemon dist/app.js",
+    "eslint": "eslint ./src/**",
+    "format": "prettier --write ./src/**",
+    "start": "nodemon --require dotenv/config dist/app.js",
     "build": "npm run clear && tsc && npm run copy-files",
     "clear": "rimraf dist/",
     "copy-files": "copyfiles public/**/* dist/"
@@ -19,6 +19,8 @@
     "csrf": "^3.1.0",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "font-awesome": "^4.7.0",
@@ -27,7 +29,8 @@
     "nodemo": "^1.0.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.3",
+    "prettier": "^2.4.1"
   },
   "devDependencies": {
     "@types/connect-flash": "0.0.37",
@@ -43,9 +46,8 @@
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
     "copyfiles": "^2.4.1",
-    "eslint": "^7.2.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
     "nodemon": "^2.0.13",
     "rimraf": "^3.0.2",
     "typescript": "^4.4.3"

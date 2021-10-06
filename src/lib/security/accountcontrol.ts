@@ -1,13 +1,14 @@
-import hash from "./hash";
-import passport from "passport";
-import * as passportLocal from "passport-local";
-import express from "express";
-import { MongoClient } from "mongodb";
+import passport from 'passport';
+import * as passportLocal from 'passport-local';
+import express from 'express';
+import { MongoClient } from 'mongodb';
+import hash from './hash';
+
 const LocalStrategy = passportLocal.Strategy;
 const connectionUrl = process.env.CONNECTION_URL;
 
 if (!connectionUrl) {
-  throw new Error("CONNECTION_URLが未設定です。");
+  throw new Error('CONNECTION_URLが未設定です。');
 }
 
 // サーバーからクライアントへ保存する処理
@@ -19,9 +20,9 @@ passport.serializeUser((email, done) => {
 passport.deserializeUser((email, done) => {
   MongoClient.connect(connectionUrl, async (error, client) => {
     if (client) {
-      let db = client.db(process.env.DATABSE);
+      const db = client.db(process.env.DATABSE);
       try {
-        const user = await db.collection("users").findOne({ email });
+        const user = await db.collection('users').findOne({ email });
         done(null, user);
       } catch {
         done(error);
@@ -34,12 +35,12 @@ passport.deserializeUser((email, done) => {
 
 // ログインボタン押下された際の処理
 passport.use(
-  "local-strategy",
+  'local-strategy',
   new LocalStrategy(
     {
       // formのname値,コールバックにリクエストオブジェクトを渡す
-      usernameField: "username",
-      passwordField: "password",
+      usernameField: 'username',
+      passwordField: 'password',
       passReqToCallback: true,
     },
     (req: express.Request, username, password, done) => {
@@ -47,15 +48,16 @@ passport.use(
         if (client) {
           const db = client.db(process.env.DATABSE);
           try {
-            const userData = await db
-              .collection("users")
-              .findOne({ email: username, password: hash.digest(password) });
+            const userData = await db.collection('users').findOne({
+              email: username,
+              password: hash.digest(password),
+            });
             if (userData) {
               // セッションIDの張替え
               req.session.regenerate((error) => {
                 if (error) {
                   done(null, false, {
-                    message: "システムエラー。管理者にお問い合わせください。",
+                    message: 'システムエラー。管理者にお問い合わせください。',
                   });
                 } else {
                   done(null, userData.email);
@@ -63,12 +65,12 @@ passport.use(
               });
             } else {
               done(null, false, {
-                message: "ユーザー名 または パスワード が間違っています。",
+                message: 'ユーザー名 または パスワード が間違っています。',
               });
             }
           } catch {
             done(null, false, {
-              message: "システムエラー。管理者にお問い合わせください。",
+              message: 'システムエラー。管理者にお問い合わせください。',
             });
           } finally {
             client.close();
@@ -80,14 +82,14 @@ passport.use(
 );
 
 // app.use()に渡す。
-const initialize = function () {
+const initialize = function setInitialize() {
   return [passport.initialize(), passport.session()];
 };
 
-const authenticate = function () {
-  return passport.authenticate("local-strategy", {
-    successRedirect: "/login/success",
-    failureRedirect: "/",
+const authenticate = function redirect() {
+  return passport.authenticate('local-strategy', {
+    successRedirect: '/login/success',
+    failureRedirect: '/',
   });
 };
 

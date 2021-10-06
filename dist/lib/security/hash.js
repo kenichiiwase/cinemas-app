@@ -19,21 +19,21 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var crypto = __importStar(require("crypto"));
-var salt = process.env.PASSWORD_SALT;
+const crypto = __importStar(require("crypto"));
+const salt = process.env.PASSWORD_SALT;
 if (!salt) {
-    throw new Error("PASSWORD_SALTが未設定です。");
+    throw new Error('PASSWORD_SALTが未設定です。');
 }
-var digest = function (text) {
-    var hash;
-    text += salt;
-    for (var i = 3; i--;) {
-        hash = crypto.createHash("sha256");
-        hash.update(text);
-        text = hash.digest("hex");
+const digest = (text) => {
+    let hash;
+    let newText = text + salt;
+    for (let i = 3; i >= 0; i -= 1) {
+        hash = crypto.createHash('sha256');
+        hash.update(newText);
+        newText = hash.digest('hex');
     }
-    return text;
+    return newText;
 };
 exports.default = {
-    digest: digest,
+    digest,
 };
