@@ -31,5 +31,5 @@ https://www.mongodb.com/try/download/community にてmongodbをインストー�
 4. 環境変数を`.env`に設定  
 ![スクリーンショット 2021-09-30 001846](https://user-images.githubusercontent.com/44935028/135301128-1de12200-56f8-4e3a-a975-2c39b69ed5da.png)  
 5. `npm run build`を実行  
-6. `npm run start-watch`を実行  
+6. `npm run start`を実行  
 7. `http://localhost:3000/`でアクセス  
