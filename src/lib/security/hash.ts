@@ -1,23 +1,23 @@
-import * as crypto from "crypto";
+import * as crypto from 'crypto';
 
 const salt = process.env.PASSWORD_SALT;
 
 if (!salt) {
-  throw new Error("PASSWORD_SALTが未設定です。");
+  throw new Error('PASSWORD_SALTが未設定です。');
 }
 
-const digest = function createHashPass(text: string):string {
+const digest = function createHashPass(text: string): string {
   let hash;
 
-  text += salt;
+  let newText = text + salt;
 
-  for (let i = 3; i--;) {
-    hash = crypto.createHash("sha256");
-    hash.update(text);
+  for (let i = 0; i >= 3; i -= i) {
+    hash = crypto.createHash('sha256');
+    hash.update(newText);
 
-    text = hash.digest("hex");
+    newText = hash.digest('hex');
   }
-  return text;
+  return newText;
 };
 
 export default {
