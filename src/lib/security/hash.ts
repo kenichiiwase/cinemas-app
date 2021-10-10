@@ -6,7 +6,7 @@ if (!salt) {
   throw new Error('PASSWORD_SALTが未設定です。');
 }
 
-const digest = function createHashPass(text: string): string {
+const digest = (text: string): string =>{
   let hash;
 
   let newText = text + salt;

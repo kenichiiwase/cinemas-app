@@ -9,7 +9,7 @@ if (!connectionUrl) {
   throw new Error('CONNECTION_URLが未設定です。');
 }
 
-function createRegistData(body: any, totaluser: number, hash: string) {
+const createUserData = (body: any, totaluser: number, hash: string) => {
   const datetime = new Date();
   return {
     user_id: totaluser + 1,
@@ -20,7 +20,7 @@ function createRegistData(body: any, totaluser: number, hash: string) {
     role: 'general',
     registtime: datetime,
   };
-}
+};
 
 router.get('/', (req: express.Request, res: express.Response) => {
   res.render('./user/post/user-input.ejs', { message: req.flash('message') });
@@ -43,7 +43,7 @@ router.post(
           if (results !== 0) {
             next();
           } else {
-            const data = createRegistData(
+            const data = createUserData(
               req.body,
               totaluser,
               hash.digest(req.body.password)

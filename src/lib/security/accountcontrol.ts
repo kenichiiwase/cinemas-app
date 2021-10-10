@@ -55,22 +55,19 @@ passport.use(
               // セッションIDの張替え
               req.session.regenerate((error) => {
                 if (error) {
-                  done(null, false, {
-                    message: 'システムエラー。管理者にお問い合わせください。',
-                  });
+                  req.flash("message","システムエラー 管理者にお問い合わせください。");
+                  done(null, false);
                 } else {
                   done(null, userData.email);
                 }
               });
             } else {
-              done(null, false, {
-                message: 'ユーザー名 または パスワード が間違っています。',
-              });
+              req.flash("message","ユーザー名 または パスワードが間違っています。");
+              done(null, false);
             }
           } catch {
-            done(null, false, {
-              message: 'システムエラー。管理者にお問い合わせください。',
-            });
+            req.flash("message","システムエラー 管理者にお問い合わせください。");
+            done(null, false);
           } finally {
             client.close();
           }
@@ -81,16 +78,13 @@ passport.use(
 );
 
 // app.use()に渡す。
-const initialize = function setInitialize() {
-  return [passport.initialize(), passport.session()];
-};
+const initialize = () => [passport.initialize(), passport.session()];
 
-const authenticate = function redirect() {
-  return passport.authenticate('local-strategy', {
+const authenticate = () =>
+  passport.authenticate('local-strategy', {
     successRedirect: '/login/success',
     failureRedirect: '/',
   });
-};
 
 export default {
   initialize,

@@ -1,6 +1,6 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
-import csrf from 'csrf';
+import Csrf from 'csrf';
 import axios, { AxiosResponse } from 'axios';
 
 const router = express.Router();
@@ -16,7 +16,7 @@ if (!connectionUrl) {
   throw new Error('CONNECTION_URLが未設定です。');
 }
 
-function createRegistData(body: any, user: any): object {
+const createCinemaData = (body: any, user: any) => {
   const datetime = new Date();
   return {
     user_mail: user,
@@ -25,7 +25,7 @@ function createRegistData(body: any, user: any): object {
     title: body.title,
     poster: body.poster,
   };
-}
+};
 
 // api取得url
 router.get('/', async (req: express.Request, res: express.Response) => {
@@ -51,7 +51,7 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 router.post(
   '/posts/regist/confirm',
   (req: express.Request, res: express.Response) => {
-    const tokens = new csrf();
+    const tokens = new Csrf();
     tokens.secret((error, secret) => {
       const token = tokens.create(secret);
       req.session._csrf = secret;
@@ -72,7 +72,7 @@ router.post(
     const token = req.cookies._csrf;
 
     // secret,tokenの組み合わせチェック
-    const tokens = new csrf();
+    const tokens = new Csrf();
     if (tokens.verify(secret, token) === false) {
       throw new Error('Invalid Token.');
     }
@@ -87,7 +87,7 @@ router.post(
             .find({ title: req.body.title })
             .count();
 
-          const data = createRegistData(req.body, userInf);
+          const data = createCinemaData(req.body, userInf);
 
           if (countData !== 0) {
             next();
@@ -109,7 +109,7 @@ router.post(
   },
   (req: express.Request, res: express.Response) => {
     const userInf = req.user || 'user';
-    const data = createRegistData(req.body, userInf);
+    const data = createCinemaData(req.body, userInf);
     req.flash('message', '既に登録済みです。');
     res.render('./cinemas/posts/regist-confirm.ejs', {
       data,
