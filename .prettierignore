@@ -4,5 +4,5 @@ dist/
 package.json
 package-lock.json
 
-# Ignore all HTML files:
+# Ignore all ejs files:
 *.ejs
