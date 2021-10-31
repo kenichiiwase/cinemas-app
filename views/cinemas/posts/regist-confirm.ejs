@@ -25,21 +25,21 @@
                 <div class="col-12">
                   <div class="form-group">
                     <label for="title" class="form-label">映画タイトル</label>
-                      <input type="text" readonly class="form-control-plaintext" id="title" name="title" value="<%= data.title %>">
+                      <input type="text" readonly class="form-control-plaintext" id="title" name="title" value="<%= cinemaData.title %>">
                   </div>
                 </div>
 
                 <div class="col-10">
                   <div class="form-group">
-                    <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<%= data.poster %>" id="poster" name="poster" readonly class="form-control-plaintext">
-                    <input type="hidden" name="poster" value="https://image.tmdb.org/t/p/w300_and_h450_bestv2<%= data.poster %>">
+                    <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<%= cinemaData.poster %>" id="poster" name="poster" readonly class="form-control-plaintext">
+                    <input type="hidden" name="poster" value="https://image.tmdb.org/t/p/w300_and_h450_bestv2<%= cinemaData.poster %>">
                   </div>
                 </div>
 
                   <div class="col-md-3">
                     <div class="form-group">
                     <label for="release" class="form-label">公開日</label>
-                      <input type="text" readonly class="form-control-plaintext" name="release" id="release" value="<%= data.release %>">
+                      <input type="text" readonly class="form-control-plaintext" name="release" id="release" value="<%= cinemaData.release %>">
                     </div>
                   </div>
                 </div>

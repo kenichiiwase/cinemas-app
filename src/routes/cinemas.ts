@@ -4,8 +4,7 @@ import Csrf from 'csrf';
 import axios, { AxiosResponse } from 'axios';
 
 const router = express.Router();
-let obj: AxiosResponse<any>;
-let data: object;
+let cinemaObj: AxiosResponse<any>;
 const apikey = '';
 
 const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&language=ja`;
@@ -16,14 +15,26 @@ if (!connectionUrl) {
   throw new Error('CONNECTION_URLが未設定です。');
 }
 
-const createCinemaData = (body: any, user: any) => {
+const createCinemaData = (body: {
+  title: string;
+  release: string;
+  poster: string;
+}) => {
   const datetime = new Date();
   return {
-    user_mail: user,
-    published: datetime,
-    release: body.release,
     title: body.title,
+    release: body.release,
     poster: body.poster,
+    regist_time: datetime,
+  };
+};
+
+const createCinemaUserData = (cinemaTitle: string, mail: string) => {
+  const datetime = new Date();
+  return {
+    cinema_title: cinemaTitle,
+    user_mail: mail,
+    regist_time: datetime,
   };
 };
 
@@ -31,7 +42,7 @@ const createCinemaData = (body: any, user: any) => {
 router.get('/', async (req: express.Request, res: express.Response) => {
   try {
     const res = await axios.get(url);
-    obj = res.data.results;
+    cinemaObj = res.data.results;
   } catch (error) {
     req.flash(
       'message',
@@ -42,10 +53,11 @@ router.get('/', async (req: express.Request, res: express.Response) => {
     });
   }
 
-  const data = {
-    list: obj,
+  const cinemaData = {
+    list: cinemaObj,
   };
-  res.render('./cinemas/index.ejs', data);
+
+  res.render('./cinemas/index.ejs', cinemaData);
 });
 
 router.post(
@@ -56,9 +68,9 @@ router.post(
       const token = tokens.create(secret);
       req.session._csrf = secret;
       res.cookie('_csrf', token);
-      const data = req.body;
+      const cinemaData = req.body;
       res.render('./cinemas/posts/regist-confirm.ejs', {
-        data,
+        cinemaData,
         message: req.flash('message'),
       });
     });
@@ -68,7 +80,10 @@ router.post(
 router.post(
   '/posts/regist/execute',
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const secret = req.session._csrf || 'csrf';
+    const secret = req.session._csrf;
+    if (!secret) {
+      throw new Error('Invalid Csrf.');
+    }
     const token = req.cookies._csrf;
 
     // secret,tokenの組み合わせチェック
@@ -80,41 +95,69 @@ router.post(
     MongoClient.connect(connectionUrl, async (error, client) => {
       if (client) {
         const db = client.db(process.env.DATABASE);
-        const userInf = req.user || 'user';
-        try {
-          const countData = await db
-            .collection('video_info')
-            .find({ title: req.body.title })
-            .count();
+        if (req.user) {
+          // ユーザIDを取得
+          const userObj = Object.create(req.user);
 
-          const data = createCinemaData(req.body, userInf);
+          try {
+            const cinemaCount = await db
+              .collection('cinemas')
+              .find({ title: req.body.title, release: req.body.release })
+              .count();
 
-          if (countData !== 0) {
-            next();
-          } else {
-            await db.collection('video_info').insertOne(data);
-            res.redirect('/cinemas/posts/regist/complete');
+            if (cinemaCount !== 0) {
+              const cinemaRegistDataCount = await db
+                .collection('cinema_user')
+                .find({
+                  cinema_title: req.body.title,
+                  user_mail: userObj.email,
+                })
+                .count();
+
+              // 既に同じユーザで映画情報が登録されている場合
+              if (cinemaRegistDataCount !== 0) {
+                next();
+              } else {
+                const cinemaUserData = createCinemaUserData(
+                  req.body.title,
+                  userObj.email
+                );
+                await db.collection('cinema_user').insertOne(cinemaUserData);
+                res.redirect('/cinemas/posts/regist/complete');
+              }
+            } else {
+              const cinemaData = createCinemaData(req.body);
+              await db.collection('cinemas').insertOne(cinemaData);
+              const cinemaUserData = createCinemaUserData(
+                req.body.title,
+                userObj.email
+              );
+              await db.collection('cinema_user').insertOne(cinemaUserData);
+              res.redirect('/cinemas/posts/regist/complete');
+            }
+          } catch (error) {
+            const cinemaData = req.body;
+            req.flash('message', '登録時にエラーが発生しました。');
+            res.render('./cinemas/posts/regist-confirm.ejs', {
+              cinemaData,
+              message: req.flash('message'),
+            });
+          } finally {
+            client.close();
           }
-        } catch (error) {
-          req.flash('message', '登録時にエラーが発生しました。');
-          res.render('./cinemas/posts/regist-confirm.ejs', {
-            data,
-            message: req.flash('message'),
-          });
-        } finally {
-          client.close();
         }
       }
     });
   },
   (req: express.Request, res: express.Response) => {
-    const userInf = req.user || 'user';
-    const data = createCinemaData(req.body, userInf);
-    req.flash('message', '既に登録済みです。');
-    res.render('./cinemas/posts/regist-confirm.ejs', {
-      data,
-      message: req.flash('message'),
-    });
+    if (req.user) {
+      const cinemaData = req.body;
+      req.flash('message', '既に登録済みです。');
+      res.render('./cinemas/posts/regist-confirm.ejs', {
+        cinemaData,
+        message: req.flash('message'),
+      });
+    }
   }
 );
 

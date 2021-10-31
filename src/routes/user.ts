@@ -9,16 +9,15 @@ if (!connectionUrl) {
   throw new Error('CONNECTION_URLが未設定です。');
 }
 
-const createUserData = (body: any, totaluser: number, hash: string) => {
+const createUserData = (body: any, hash: string) => {
   const datetime = new Date();
   return {
-    user_id: totaluser + 1,
+    // user_id: totaluser + 1,
     email: body.email,
     name: `${body.lastName} ${body.firstName}`,
     password: hash,
-    phoneNo: body.phoneNo,
-    role: 'general',
-    registtime: datetime,
+    phone_no: body.phoneNo,
+    regist_time: datetime,
   };
 };
 
@@ -33,22 +32,21 @@ router.post(
       if (client) {
         const db = client.db(process.env.DATABSE);
         try {
-          const results = await db
+          const mailCount = await db
             .collection('users')
             .find({ email: req.body.email })
             .count();
 
-          const totaluser = await db.collection('users').find().count();
+          // const totaluser = await db.collection('users').find().count();
 
-          if (results !== 0) {
+          if (mailCount !== 0) {
             next();
           } else {
-            const data = createUserData(
+            const userData = createUserData(
               req.body,
-              totaluser,
               hash.digest(req.body.password)
             );
-            await db.collection('users').insertOne(data);
+            await db.collection('users').insertOne(userData);
             res.redirect('/user/post/regist/complete');
           }
         } catch (error) {

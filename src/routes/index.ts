@@ -4,8 +4,6 @@ import accountControl from '../lib/security/accountcontrol';
 const router = express.Router();
 
 router.get('/', (req: express.Request, res: express.Response) => {
-
-  
   res.render('./login.ejs', { message: req.flash('message') });
 });
 

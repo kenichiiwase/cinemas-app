@@ -15,21 +15,21 @@
           <form method="POST" action="/bookmark/delete/confirm">
             <div class="col">
               <div class="card shadow-sm">
-                <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<%= item.poster %>" class="img-fluid">
+                <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<%= item.cinema_info[0].poster %>" class="img-fluid">
                 <div class="card-body">
                   <div class="text-truncate" >
-                    <p class="card-text"><%= item.title %></p>
+                    <p class="card-text"><%= item.cinema_info[0].title %></p>
                   </div>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                         <input type="submit" class="btn btn-sm btn-outline-secondary" value="削除"/>
                     </div>
                     <div class="form-group">
-                        <input type="hidden" name="poster" value="<%= item.poster %>">
-                        <input type="hidden" name="title" value="<%= item.title %>"> 
-                        <input type="hidden" name="release" value="<%= item.release %>">   
+                        <input type="hidden" name="poster" value="<%= item.cinema_info[0].poster %>">
+                        <input type="hidden" name="title" value="<%= item.cinema_info[0].title %>"> 
+                        <input type="hidden" name="release" value="<%= item.cinema_info[0].release %>">   
                     </div>
-                    <small class="text-muted"><%= item.release %></small>
+                    <small class="text-muted"><%= item.cinema_info[0].release %></small>
                 </div>
                 </div>
               </div>

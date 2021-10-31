@@ -55,18 +55,27 @@ passport.use(
               // セッションIDの張替え
               req.session.regenerate((error) => {
                 if (error) {
-                  req.flash("message","システムエラー 管理者にお問い合わせください。");
+                  req.flash(
+                    'message',
+                    'システムエラー 管理者にお問い合わせください。'
+                  );
                   done(null, false);
                 } else {
                   done(null, userData.email);
                 }
               });
             } else {
-              req.flash("message","ユーザー名 または パスワードが間違っています。");
+              req.flash(
+                'message',
+                'ユーザー名 または パスワードが間違っています。'
+              );
               done(null, false);
             }
           } catch {
-            req.flash("message","システムエラー 管理者にお問い合わせください。");
+            req.flash(
+              'message',
+              'システムエラー 管理者にお問い合わせください。'
+            );
             done(null, false);
           } finally {
             client.close();

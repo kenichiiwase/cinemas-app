@@ -4,12 +4,12 @@ import axios, { AxiosResponse } from 'axios';
 const router = express.Router();
 const apikey = '';
 const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${apikey}&language=ja`;
-let obj: AxiosResponse<any>;
+let cinemaObj: AxiosResponse<any>;
 
 router.get('/', async (req: express.Request, res: express.Response) => {
   try {
     const res = await axios.get(url);
-    obj = res.data.results;
+    cinemaObj = res.data.results;
   } catch (error) {
     req.flash(
       'message',
@@ -19,10 +19,10 @@ router.get('/', async (req: express.Request, res: express.Response) => {
       message: req.flash('message'),
     });
   }
-  const data = {
-    list: obj,
+  const cinemaData = {
+    list: cinemaObj,
   };
-  res.render('./trends/index.ejs', data);
+  res.render('./trends/index.ejs', cinemaData);
 });
 
 export default router;
